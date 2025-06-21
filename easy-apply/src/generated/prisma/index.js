@@ -229,7 +229,7 @@ const config = {
       "value": "prisma-client-js"
     },
     "output": {
-      "value": "/Users/nicolasguigay/cursor-project/template-saas/src/generated/prisma",
+      "value": "/Users/nicolasguigay/GitHub/my-projects/easy-apply-app/easy-apply/src/generated/prisma",
       "fromEnvVar": null
     },
     "config": {
@@ -243,7 +243,7 @@ const config = {
       }
     ],
     "previewFeatures": [],
-    "sourceFilePath": "/Users/nicolasguigay/cursor-project/template-saas/prisma/schema.prisma",
+    "sourceFilePath": "/Users/nicolasguigay/GitHub/my-projects/easy-apply-app/easy-apply/prisma/schema.prisma",
     "isCustomOutput": true
   },
   "relativeEnvPaths": {
@@ -257,6 +257,7 @@ const config = {
     "db"
   ],
   "activeProvider": "mysql",
+  "postinstall": true,
   "inlineDatasources": {
     "db": {
       "url": {

@@ -1,0 +1,25 @@
+{
+  "name": "easy-apply-monorepo",
+  "version": "1.0.0",
+  "description": "Monorepo for Easy Apply job application platform",
+  "private": true,
+  "scripts": {
+    "dev": "concurrently \"npm run dev:api\" \"npm run dev:frontend\" \"npm run dev:python\"",
+    "dev:api": "cd easy-apply-API && npm start",
+    "dev:frontend": "cd easy-apply && npm run dev",
+    "dev:python": "cd JobSpy && poetry run python3 -m uvicorn api_jobspy:app --host 0.0.0.0 --port 8000 --reload",
+    "install:all": "npm install && cd easy-apply && npm install && cd ../easy-apply-API && npm install",
+    "build": "cd easy-apply && npm run build",
+    "start": "concurrently \"npm run start:api\" \"npm run start:frontend\"",
+    "start:api": "cd easy-apply-API && npm start",
+    "start:frontend": "cd easy-apply && npm start",
+    "stop": "pkill -f 'node server.js' && pkill -f 'next dev' && pkill -f 'uvicorn'"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2"
+  },
+  "workspaces": [
+    "easy-apply",
+    "easy-apply-API"
+  ]
+} 

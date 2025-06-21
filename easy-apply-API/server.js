@@ -24,7 +24,9 @@ app.get('/api/hellowork', async (req, res) => {
     const jobs = await scrapeHelloWork(jobQuery, locationQuery, resultsCount);
     res.json({ count: jobs.length, jobs });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error in HelloWork endpoint:", err.message);
+    // Return empty results instead of 500 error
+    res.json({ count: 0, jobs: [], error: "HelloWork temporarily unavailable" });
   }
 });
 
@@ -37,7 +39,9 @@ app.get('/api/wttj', async (req, res) => {
     const jobs = await scrapeWTTJ(jobQuery, locationQuery, url || null, resultsCount);
     res.json({ count: jobs.length, jobs });
   } catch (err) {
-    res.status(500).json({ error: err.message });
+    console.error("Error in WTTJ endpoint:", err.message);
+    // Return empty results instead of 500 error
+    res.json({ count: 0, jobs: [], error: "Welcome to the Jungle temporarily unavailable" });
   }
 });
 
@@ -50,8 +54,9 @@ app.get('/api/indeed', async (req, res) => {
     const jobs = await scrapeIndeed(jobQuery, locationQuery, resultsCount);
     res.json({ count: jobs.length, jobs });
   } catch (err) {
-    console.error("Error in Indeed endpoint:", err);
-    res.status(500).json({ error: err.message });
+    console.error("Error in Indeed endpoint:", err.message);
+    // Return empty results instead of 500 error
+    res.json({ count: 0, jobs: [], error: "Indeed temporarily unavailable" });
   }
 });
 
@@ -67,12 +72,28 @@ app.get('/api/all', async (req, res) => {
     const { jobQuery, locationQuery, url, resultsWanted } = req.query;
     const resultsCount = parseInt(resultsWanted) || 30;
     
-    // Fetch from HelloWork, WTTJ, and Indeed in parallel
-    const [hwJobs, wttjJobs, indeedJobs] = await Promise.all([
+    // Fetch from HelloWork, WTTJ, and Indeed in parallel with individual error handling
+    const results = await Promise.allSettled([
       scrapeHelloWork(jobQuery, locationQuery, resultsCount),
       scrapeWTTJ(jobQuery, locationQuery, url || null, resultsCount),
       scrapeIndeed(jobQuery, locationQuery, resultsCount)
     ]);
+    
+    // Extract results and handle individual failures
+    const hwJobs = results[0].status === 'fulfilled' ? results[0].value : [];
+    const wttjJobs = results[1].status === 'fulfilled' ? results[1].value : [];
+    const indeedJobs = results[2].status === 'fulfilled' ? results[2].value : [];
+    
+    // Log any failures
+    if (results[0].status === 'rejected') {
+      console.error("HelloWork scraping failed:", results[0].reason);
+    }
+    if (results[1].status === 'rejected') {
+      console.error("WTTJ scraping failed:", results[1].reason);
+    }
+    if (results[2].status === 'rejected') {
+      console.error("Indeed scraping failed:", results[2].reason);
+    }
     
     // Combine results
     const allJobs = [...hwJobs, ...wttjJobs, ...indeedJobs];
@@ -81,11 +102,28 @@ app.get('/api/all', async (req, res) => {
       helloWork: { count: hwJobs.length, jobs: hwJobs }, 
       wttj: { count: wttjJobs.length, jobs: wttjJobs }, 
       indeed: { count: indeedJobs.length, jobs: indeedJobs },
-      all: allJobs 
+      all: allJobs,
+      errors: {
+        helloWork: results[0].status === 'rejected' ? "HelloWork temporarily unavailable" : null,
+        wttj: results[1].status === 'rejected' ? "Welcome to the Jungle temporarily unavailable" : null,
+        indeed: results[2].status === 'rejected' ? "Indeed temporarily unavailable" : null
+      }
     });
   } catch (err) {
-    console.error("Error in /api/all endpoint:", err);
-    res.status(500).json({ error: err.message });
+    console.error("Error in /api/all endpoint:", err.message);
+    // Return empty results instead of 500 error
+    res.json({ 
+      count: 0, 
+      helloWork: { count: 0, jobs: [] }, 
+      wttj: { count: 0, jobs: [] }, 
+      indeed: { count: 0, jobs: [] },
+      all: [],
+      errors: {
+        helloWork: "HelloWork temporarily unavailable",
+        wttj: "Welcome to the Jungle temporarily unavailable", 
+        indeed: "Indeed temporarily unavailable"
+      }
+    });
   }
 });
 

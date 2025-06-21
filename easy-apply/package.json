@@ -10,6 +10,8 @@
   },
   "dependencies": {
     "@auth/prisma-adapter": "^2.9.1",
+    "@babel/runtime": "^7.27.6",
+    "@babel/runtime-corejs3": "^7.27.6",
     "@heroicons/react": "^2.2.0",
     "@prisma/client": "^6.8.1",
     "@radix-ui/react-alert-dialog": "^1.1.14",
