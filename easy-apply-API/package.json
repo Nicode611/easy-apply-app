@@ -1,0 +1,19 @@
+{
+  "name": "easy-apply",
+  "version": "1.0.0",
+  "description": "Job scraper API using Express and Puppeteer",
+  "main": "server.js",
+  "type": "module",
+  "scripts": {
+    "start": "node server.js",
+    "dev": "node server.js"
+  },
+  "dependencies": {
+    "express": "^4.18.2",
+    "puppeteer": "^21.0.0",
+    "cors": "^2.8.5"
+  },
+  "keywords": ["job-scraper", "puppeteer", "express"],
+  "author": "",
+  "license": "MIT"
+}
