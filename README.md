@@ -2,6 +2,12 @@
 
 Une plateforme complète de recherche et gestion d'emplois avec scraping automatique de multiples sites d'emploi.
 
+**Screenshot of the project**
+![Landing page](/easy-apply/public/easy-apply-landing.webp)
+![Find Job](/easy-apply/public/easy-apply-find-job.webp)
+![Saved jobs](/easy-apply/public/easy-apply-saved.webp)
+
+
 ## 📋 Table des matières
 
 - [Architecture](#architecture)
