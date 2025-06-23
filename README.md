@@ -196,7 +196,7 @@ Créer un fichier `.env` dans `easy-apply/` :
 
 ```env
 # Base de données
-DATABASE_URL="postgresql://user:password@localhost:5432/easy_apply"
+DATABASE_URL="mysql://user:password@localhost:5432/easy_apply"
 
 # NextAuth
 NEXTAUTH_SECRET="your-secret-key"
@@ -220,85 +220,6 @@ npx prisma migrate dev
 npx prisma studio
 ```
 
-## 🚀 Déploiement
-
-### Frontend (Vercel/Netlify)
-```bash
-cd easy-apply
-npm run build
-```
-
-### API Express (Railway/Render)
-```bash
-cd easy-apply-API
-npm start
-```
-
-### API Python (Railway/Render)
-```bash
-cd JobSpy
-poetry install
-uvicorn api_jobspy:app --host 0.0.0.0 --port $PORT
-```
-
-## 🐛 Dépannage
-
-### Problèmes courants
-
-1. **Port déjà utilisé**
-   ```bash
-   npm run stop
-   # Puis redémarrer
-   npm run dev
-   ```
-
-2. **Module uvicorn manquant (Python)**
-   ```bash
-   cd JobSpy
-   python3 -m pip install uvicorn fastapi
-   ```
-
-3. **Erreur @babel/runtime (Next.js)**
-   ```bash
-   cd easy-apply
-   npm install @babel/runtime @babel/runtime-corejs3
-   ```
-
-4. **Dépendances Python manquantes**
-   ```bash
-   cd JobSpy
-   poetry install
-   ```
-
-5. **Base de données non connectée**
-   ```bash
-   cd easy-apply
-   npx prisma generate
-   npx prisma migrate dev
-   ```
-
-### Erreurs spécifiques
-
-#### "No module named uvicorn"
-```bash
-cd JobSpy
-python3 -m pip install uvicorn fastapi
-```
-
-#### "Can't resolve '@babel/runtime/helpers/interopRequireDefault'"
-```bash
-cd easy-apply
-npm install @babel/runtime @babel/runtime-corejs3
-```
-
-#### "Port 3000 is in use"
-```bash
-# Arrêter tous les services
-npm run stop
-# Puis redémarrer
-npm run dev
-```
-
 ## 📝 Scripts disponibles
 
 | Commande | Description |
@@ -310,25 +231,6 @@ npm run dev
 | `npm run stop` | Arrêter tous les services |
 | `./start-dev.sh` | Script shell alternatif |
 
-## 🤝 Contribution
-
-1. Fork le projet
-2. Créer une branche feature (`git checkout -b feature/AmazingFeature`)
-3. Commit les changements (`git commit -m 'Add some AmazingFeature'`)
-4. Push vers la branche (`git push origin feature/AmazingFeature`)
-5. Ouvrir une Pull Request
-
-## 📄 Licence
-
-Ce projet est sous licence MIT. Voir le fichier `LICENSE` pour plus de détails.
-
-## 👥 Auteurs
-
-- **Votre nom** - *Développement initial* - [VotreGitHub](https://github.com/votreusername)
-
 ## 🙏 Remerciements
 
 - [JobSpy](https://github.com/cullenwatson/JobSpy) pour le scraping avancé
-- [Next.js](https://nextjs.org/) pour le framework React
-- [Prisma](https://www.prisma.io/) pour l'ORM
-- [Tailwind CSS](https://tailwindcss.com/) pour le styling 
